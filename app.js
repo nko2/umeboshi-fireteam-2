@@ -4,7 +4,7 @@
  */
 
 var express = require('express')
-		, nko = require('nko')('8XopnAwJ5kmbKTO2');
+		, nko = require('nko')('TEAM_SECRET_HERE');
 
 var app = module.exports = express.createServer();
 
