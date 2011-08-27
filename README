@@ -1,0 +1,15 @@
+Node Knockout 2011
+
+Running this app:
+1. Install Node.js (http://nodejs.org)
+2. Install NPM (curl http://npmjs.org/install.sh | sh). Check at http://npmjs.org for further instructions.
+3. Type: npm install -d
+4. Be happy.
+
+Dependencies:
+
+1. MongoDB (http://mongodb.org)
+2. Node.js (http://nodejs.org)
+3. Express.js (http://expressjs.com/)
+4. npm (http://npmjs.org)
+5. Check package.json for more info.
