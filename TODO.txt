@@ -1,0 +1,5 @@
+- Panda calls working
+- Store responses to filesystem
+- Migrate responses to database
+- Deploy on Linode or joyent
+- populate DB
