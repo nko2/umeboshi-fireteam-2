@@ -49,8 +49,8 @@ var panda_name = 'ling ling',
     
 function callback(){}
 
-function connect(host, port) {
-	this.photo_collection = new PhotoCollection(host, port);
+function connect(host, port, database, username, password) {
+	this.photo_collection = new PhotoCollection(host, port, database, username, password);
 }
 
 function retrievePhotos(){
@@ -94,5 +94,6 @@ function callback(res){
       });
     }
 
-connect("localhost", 27017);
+// connect("localhost", 27017);
+connect("staff.mongohq.com", 10034, "nodeko2011", "dqo", "nodeko2011");
 retrievePhotos();

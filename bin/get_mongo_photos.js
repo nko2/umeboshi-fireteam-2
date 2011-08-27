@@ -1,7 +1,7 @@
 var PhotoCollection = require('../lib/photo_collection').PhotoCollection;
 
-function connect(host, port) {
-	this.photo_collection = new PhotoCollection(host, port);
+function connect(host, port, database, username, password) {
+	this.photo_collection = new PhotoCollection(host, port, database, username, password);
 }
 
 
@@ -16,6 +16,20 @@ function listMongoPictures() {
 	});
 }
 
+function count() {
+	this.photo_collection.count(function(error, result) {
+		if(error) console.log(error);
+		else {
+			console.log(result);
+		}
+	});
+}
 
-connect("localhost", 27017);
-listMongoPictures();
+function run() {
+	connect("staff.mongohq.com", 10034, "nodeko2011", "dqo", "nodeko2011");
+	// listMongoPictures();	
+	count();
+	setTimeout(run, 60000);
+}
+
+run();
