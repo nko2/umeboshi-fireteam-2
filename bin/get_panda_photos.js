@@ -6,6 +6,9 @@ var defaults = {
 };
 var http = require('http'),
     querystring = require('querystring'),
+		MongoDB = require('mongodb').Db;
+		MongoConnection = require('mongodb').Connection;
+		MongoServer = require('mongodb').Server;
     flickr_setup = require('../setup/flickr_keys').setup;
 
 var panda_name = 'ling ling',
@@ -47,6 +50,12 @@ var panda_name = 'ling ling',
     };
     
 function callback(){}
+
+function connect(host, port) {
+	this.db = new MongoDB('panda_photos', new MongoServer(host, port, {auto_reconnect: true}, {}));
+  this.db.open(function(){});
+}
+
 function retrievePhotos(){
   http.get({ 
     host: defaults.host, 
@@ -72,6 +81,13 @@ function callback(res){
           response.photos.photo.forEach(function(item){
             if (item.license > 0){ //creative commons photos
               console.log(item);
+							this.db.collection('panda_collection', function(error, collection){
+								if(error) {
+									console.log(error);
+								} else {
+									collection.insert(item, function(){});
+								}
+							})
             }
           });
           var delay =  (1000 * (response.photos.lastupdate + response.photos.interval)) - new Date().getTime();
@@ -81,5 +97,5 @@ function callback(res){
       });
     }
 
-
+connect("localhost", 27017);
 retrievePhotos();
