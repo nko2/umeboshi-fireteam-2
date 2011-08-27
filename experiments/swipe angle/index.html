@@ -1,0 +1,50 @@
+<html>
+<body>
+	<h1>Check Console Log</h1>
+	<div style="width:500px;height:500px;background-color:#EEEEEE" ontouchstart="touchstart(event);" ontouchmove="touchmove(event);" ontouchend="touchend(event);" ontouchcancel="touchcancel(event);"></div>
+	<script>
+	//variáveis GLOBAIS!! YEAH!
+	startX = 0;
+	startY = 0;
+	lastX = 0;
+	lastY = 0;
+	oneFingerOnly = false;
+	
+	function touchstart(event){
+		event.preventDefault();
+		if(event.touches.length == 1){ // Only deal with one finger
+			oneFingerOnly = true;
+	    var touch = event.touches[0]; // Get the information for finger #1
+			//atualiza as variaveis iniciais
+			startX = touch.pageX;
+			startY = touch.pageY;
+			console.log('start: ' + startX + "/" + startX);
+	  } else {
+		oneFingerOnly = false;
+	}
+	}
+	function touchmove(event){
+		if(event.touches.length == 1){ // Only deal with one finger
+	    var touch = event.touches[0]; // Get the information for finger #1
+			//atualiza as variaveis enquanto mudar
+			lastX = touch.pageX;
+			lastY = touch.pageY;
+			// console.log('start: ' + lastX + "/" + lastX);
+	  }
+	}
+	function touchend(event){
+		if(oneFingerOnly){
+			var deltaX = lastX - startX;
+			var deltaY = lastY - startY;
+			var angle = Math.atan2(deltaY,deltaX)/(Math.PI/180);
+			console.log('ended with deltaX: ' + deltaX + " and deltaY: " + deltaY + " atan2: " + angle);
+			document.getElementById('seta').style['-webkit-transform'] = 'rotate(' + angle + 'deg)';
+		}
+	}
+	function touchcancel(event){
+		console.log('cancel');
+	}
+	</script>
+	<div id='seta' style="background-image:url(seta.png); width:256px; height:256px;"></div>
+</body>
+</html>
