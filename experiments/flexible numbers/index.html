@@ -1,0 +1,86 @@
+<!doctype html>
+<!--[if lt IE 7]> <html class="no-js ie6 oldie" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js ie7 oldie" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js ie8 oldie" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+  <title>FOO</title>
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+    
+  <!-- CSS concatenated and minified via ant build script-->
+  <link rel="stylesheet" href="css/style.css">
+  <!-- end CSS-->
+  
+  <script>
+  function windowResized(){
+    var new_h = window.innerHeight;
+    document.body.style.height = new_h+'px';
+    document.getElementById('main').style.height = new_h+'px';
+  }
+  window.addEventListener('resize', windowResized, true);
+  </script>
+  <style>
+body{
+  background-image:url(../../mockups/sorting-screen.png);
+  background-repeat:no-repeat;
+  background-size:100% 100%;
+  opacity:0.3;
+  height:768px;
+  width:100%;
+}
+#main{
+  height:768px;
+  width:100%;
+}
+#top-strip{
+  height:5.7%;
+  background-color:blue;
+}
+#score{
+  height:34%;
+  overflow:hidden;
+  background-color:green;
+}
+#buckets{
+  height:64.3%;
+  background-color:yellow;
+}
+  </style>
+</head>
+
+<body>
+
+  <div id="container">
+    <header>
+
+    </header>
+    <div id="main" role="main">
+      <div id="top-strip">
+      </div>
+      <div id="score">
+        <div id="score-left">
+          <p>65</p>
+        </div>
+        <div id="score-right">
+          <p>324</p>
+        </div>
+      </div>
+      <div id="buckets">
+      </div>
+    </div>
+    <footer>
+
+    </footer>
+  </div> <!--! end of #container -->
+  <script>
+  windowResized();
+  </script>
+</body>
+</html>

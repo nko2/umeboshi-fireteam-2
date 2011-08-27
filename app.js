@@ -1,10 +1,12 @@
+// Setup
+var nko_setup = require('./setup/nko').setup;
 
 /**
  * Module dependencies.
  */
 
 var express = require('express')
-		, nko = require('nko')('TEAM_SECRET_HERE');
+		, nko = require('nko')(nko_setup.secret);
 
 var app = module.exports = express.createServer();
 
