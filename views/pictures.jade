@@ -1,8 +1,8 @@
 h1= title
-#pictures
+ul#pictures
   - each picture in pictures
-    div
-      div.picture
+    li.picture
+      div.photo
         img(src=picture.url, title=picture.title)
       div.picture_metadata
         p= 'ID: '+ picture.id +' '
