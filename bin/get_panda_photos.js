@@ -88,7 +88,7 @@ function callback(res){
 							});
             }
           });
-          var delay =  (1000 * (response.photos.lastupdate + response.photos.interval)) - new Date().getTime();
+          var delay =  Math.abs((1000 * (response.photos.lastupdate + response.photos.interval)) - new Date().getTime());
           console.log(delay);
           setTimeout(retrievePhotos, delay);
         }

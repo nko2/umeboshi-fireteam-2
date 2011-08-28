@@ -9,9 +9,8 @@ function listMongoPictures() {
 	this.photo_collection.all(function(error, results){
 		if(error) console.log(error);
 		else {
-			results.forEach(function(photo){
-				url = "http://farm%s.static.flickr.com/%s/%s_%s.jpg";
-				console.log(url, photo.farm, photo.server, photo.id, photo.secret);
+			results.forEach(function(photo){				
+				console.log(PhotoCollection.getURL(photo));
 			});
 		}
 	});
@@ -27,10 +26,13 @@ function count() {
 }
 
 function countWithTag() {
-	this.photo_collection.withTag('girl', function(error, result) {
+	this.photo_collection.withTag('girl', function(error, results) {
 		if(error) console.log(error);
 		else {
-			console.log(result.length);
+			console.log(results.length);
+			results.forEach(function(photo){				
+				console.log(PhotoCollection.getURL(photo));
+			});
 		}
 	});
 }
@@ -38,8 +40,8 @@ function countWithTag() {
 function run() {
 	connect("staff.mongohq.com", 10034, "nodeko2011", "dqo", "nodeko2011");
 	// listMongoPictures();	
-	count();
-	// countWithTag();
+	// count();
+	countWithTag();
 	setTimeout(run, 60000);
 }
 
