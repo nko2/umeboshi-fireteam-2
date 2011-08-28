@@ -61,7 +61,7 @@ app.get('/pictures', function(req, res){
 		if(error) console.log(error);
 		else {
 			console.log("Results for tag '%s': %d", req.params.tag, results.length);
-			if (req.query.fmt == 'json') {
+			if (req.header('Accept').indexOf('application/json') != -1) {
 				res.writeHead(200, {'Content-Type': 'application/json'})
 				var output = JSON.stringfy({'pictures':results})
 				if (req.query.callback) output = req.query.callback + '('+output+')';//JSONP
@@ -83,7 +83,7 @@ app.get('/pictures/:tag', function(req, res){
 		if(error) console.log(error);
 		else {
 			console.log("Results for tag '%s': %d", req.params.tag, results.length);
-			if (req.query.fmt == 'json') {
+			if (req.header('Accept').indexOf('application/json') != -1) {
 				res.writeHead(200, {'Content-Type': 'application/json'})
 				var output = JSON.stringfy({'pictures':results})
 				if (req.query.callback) output = req.query.callback + '('+output+')';//JSONP
@@ -110,7 +110,7 @@ app.post('/pictures/classify', function(req, res){
 					console.log(error);
 				} else {
 					console.log("CLASSIFIED");
-					if (req.query.fmt == 'json') {
+					if (req.header('Accept').indexOf('application/json') != -1) {
 						res.writeHead(200, {'Content-Type': 'application/json'})
 						var output = JSON.stringfy({'result':'OK'})
 						if (req.query.callback) output = req.query.callback + '('+output+')';//JSONP
@@ -128,30 +128,43 @@ app.post('/pictures/classify', function(req, res){
 var quests = {};
 // Quest routes
 app.get('/quests/new', function(req, res){
+	res.render('new_quest', {
+		title: "Created yout quest!"
+	});
+});
+
+app.post('/quests/create', function(req, res){
 	var baseURL = QuestUtils.baseUrl(req);
   var blurb = QuestUtils.generateBlurb();
-	pubsubURL = QuestUtils.getPubSubServerURL(req);
+	var pubsubURL = QuestUtils.getPubSubServerURL(req);
 	var questURL = pubsubURL+"/"+blurb;
-	quests[blurb] = questURL;
-	jsFile = pubsubURL+".js"
-	if (req.query.fmt == 'json') {
+	var jsFile = pubsubURL+".js"
+	var tags = req.body.tags.split(",")
+	var buckets = req.body.buckets.split(",")
+	var colour_scheme = req.body.colour_scheme.split(",")
+	var quest = {questURL: questURL
+							,pubsubJSFile: jsFile
+							,questName: blurb
+							,pubsubURL: pubsubURL
+							,tags: tags
+							,buckets: buckets
+							,colour_scheme: colour_scheme}
+	quests[blurb] = quest;
+	if (req.header('Accept').indexOf('application/json') != -1) {
     res.writeHead(200, { "Content-Type": "application/json" })
-    var output = JSON.stringify({ 'quest_key': blurb });
+    var output = JSON.stringify(quest);
     if (req.query.callback) output = req.query.callback + '('+output+')';//JSONP
     res.end(output);
 	} else{
-  	res.render('new_quest', {
+  	res.render('quest', {
 			title: "Quest created!"
- 			,questURL: questURL
- 			,pubsubJSFile: jsFile
- 			,questName: blurb
- 			,pubsubURL: pubsubURL
+ 			,quest: quest
   	});
 	}
 });
 
 app.get('/quests', function(req, res){
-	if (req.query.fmt == 'json') {
+	if (req.header('Accept').indexOf('application/json') != -1) {
 		res.writeHead(200, {'Content-Type': 'application/json'})
 		var output = JSON.stringfy({'quests':quests})
 		if (req.query.callback) output = req.query.callback + '('+output+')';//JSONP
