@@ -156,7 +156,7 @@ app.post('/quests/create', function(req, res){
     if (req.query.callback) output = req.query.callback + '('+output+')';//JSONP
     res.end(output);
 	} else{
-  	res.render('quest', {
+  	res.render('quest_created', {
 			title: "Quest created!"
  			,quest: quest
   	});
@@ -175,6 +175,15 @@ app.get('/quests', function(req, res){
 			,quests: quests
 		});	
 	}
+});
+
+app.get('/quests/:id', function(req, res){
+	var quest_id = req.params.id
+	var quest = quests[quest_id]
+	res.render('quest', {
+		title: "You are on quest "+quest_id
+		,quest: quest
+	});
 });
 
 
