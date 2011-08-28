@@ -39,9 +39,29 @@ STYLESHEETS_PATH
       <div id="photos">
         <p id="photo-throbber">•••</p>
         <ul id="photo-strip">
-          <li class="photo p3"><img src="http://farm3.static.flickr.com/2538/4165413563_f0d0c161c9_m.jpg" /></li>
-          <li class="photo p2"><img src="http://farm4.static.flickr.com/3441/3923119254_73253efea2_m.jpg" /></li>
-          <li class="photo p1" ontouchstart="touchstart(event);" ontouchmove="touchmove(event);" ontouchend="touchend(event);" ontouchcancel="touchcancel(event);"><img src="http://farm7.static.flickr.com/6193/6080825482_b66e80b669_m.jpg" /></li>
+          <li id="photo-slot-3" class="photo p3"
+                ontouchstart="touchstart(event);"
+                ontouchmove="touchmove(event);"
+                ontouchend="touchend(event);"
+                ontouchcancel="touchcancel(event);">
+            <img id="photo-source-3" src="" /></li>
+          <li id="photo-slot-2" class="photo p2"
+                ontouchstart="touchstart(event);"
+                ontouchmove="touchmove(event);"
+                ontouchend="touchend(event);"
+                ontouchcancel="touchcancel(event);">
+            <img id="photo-source-2" src="" /></li>
+          <li id="photo-slot-1" class="photo p1" 
+                ontouchstart="touchstart(event);"
+                ontouchmove="touchmove(event);"
+                ontouchend="touchend(event);"
+                ontouchcancel="touchcancel(event);">
+            <img  id="photo-source-1" src="" />
+            <div id="photo-label">
+              <p id="photo-label-text">foobar</p>
+              <div id="label-color"></div>
+            </div>
+          </li>
         </ul>
       </div>
     </div>

@@ -1,9 +1,9 @@
 body{
   font-family: 'Helvetica';
-  background-image:url(../../mockups/sorting-screen.png);
+/*  background-image:url(../../mockups/05-sorting-screen-label.png);*/
   background-repeat:no-repeat;
   background-size:100% 100%;
-  opacity:1;
+/*  opacity:0.5;*/
   height:768px;
   width:100%;
 }
@@ -73,7 +73,8 @@ body{
   width:60px;
   height:60px;
   line-height:60px;
-  opacity:0.2;
+  opacity:0.5;
+  z-index: 3;
 }
 .photo.p3 img{max-width:60px;max-height:60px;}
 .photo.p2{
@@ -82,17 +83,63 @@ body{
   width:120px;
   height:120px;
   line-height:120px;
-  opacity:0.5;
+  opacity:0.8;
+  z-index: 2;
 }
 .photo.p2 img{max-width:120px;max-height:120px;}
 .photo.p1{
+  z-index: 3;
   top:142px;
-  width:240px;
-  height:240px;
+/*  width:240px;*/
+/*  height:240px;*/
   line-height:240px;
 }
-.photo.p1 img{max-width:240px;max-height:240px;}
+.photo.p1 img{max-width:240px;max-height:240px;background-color:#fff;}
 
+#photo-label{
+  position:absolute;
+  top:50%;
+  left:100%;
+  margin-left:-13px;
+  margin-top:-15px;
+  display:none;
+}
+#photo-label.skip{
+  left:50% !important;
+  margin-left:-30px !important;
+  margin-top:-15px;
+}
+#photo-label.skip p{
+  padding-left: 14px;
+}
+#photo-label.skip #label-color{
+  display:none;
+}
+#photo-label.visible{
+  display:block;
+}
+#label-color{
+  position:absolute;
+  background-color:red;
+  width:20px;
+  height:20px;
+  border-radius:15px;
+  margin-left:2px;
+  margin-top:1px;
+}
+#photo-label p{
+  position: absolute;
+  margin:0;
+  padding:6px;
+  padding-left:34px;
+  padding-right:12px;
+  margin-left:-5px;
+  margin-top:-5px;
+  line-height:21px;
+  font-size:21px;
+  background-color:#fff;
+  border-radius:15px;
+}
 /** GAMBI PARA O SVG DOS BUCKETS FICAR NA ROTACAO CORRETA **/
 #bucket-background{
   -moz-transform-origin:left center;
