@@ -15,7 +15,7 @@ var express = require('express')
 		, PhotoCollection = require('./lib/photo_collection').PhotoCollection
 		, QuestUtils = require('./lib/quest_utils').QuestUtils;
 
-var pubsub = new faye.NodeAdapter({mount: QuestUtils.getURI(), timeout: 15})
+var pubsub = new faye.NodeAdapter({mount: QuestUtils.getFayeURI(), timeout: 15})
 var host = "staff.mongohq.com"
 	, port = 10034 
 	, database = "nodeko2011"
@@ -137,7 +137,7 @@ app.post('/quests/create', function(req, res){
 	var baseURL = QuestUtils.baseUrl(req);
   var blurb = QuestUtils.generateBlurb();
 	var pubsubURL = QuestUtils.getPubSubServerURL(req);
-	var questURL = pubsubURL+"/"+blurb;
+	var questURL = QuestUtils.getQuestURL(req)+"/"+blurb;
 	var jsFile = pubsubURL+".js"
 	var tags = req.body.tags.split(",")
 	var buckets = req.body.buckets.split(",")
@@ -180,10 +180,16 @@ app.get('/quests', function(req, res){
 app.get('/quests/:id', function(req, res){
 	var quest_id = req.params.id
 	var quest = quests[quest_id]
-	res.render('quest', {
-		title: "You are on quest "+quest_id
-		,quest: quest
-	});
+	if(quest) {
+		res.render('quest', {
+			title: "You are on quest "+quest_id
+			,quest: quest
+		});		
+	} else {
+		res.render('error', {
+			title: 'Ops, there is no such quest!'
+		})
+	}
 });
 
 
