@@ -442,6 +442,31 @@ function loadVariables(){
        addWedgeListeners();
        resetaCoresFatias();
        var tags_to_load = msg.tags;
+       // tags_to_load_s = tags_to_load.join('');
+       tags_to_load_s = '';
+       if(msg.tags[0].length > 0){
+         
+         tags_to_load_s = tags_to_load[0];
+       }
+       console.log(tags_to_load_s);
+       // url:'/pictures/'+tags_to_load_s
+
+       // $.ajax({   
+       //    url:'/pictures/'+tags_to_load_s
+       //  , data: ""
+       //  , type: "GET"
+       //  , dataType: 'json'
+       //  , success: function(msg) {
+       //      console.log(msg);
+       //    }
+       //  , error: function(msg) {
+       //      console.log("Erro: "+msg.msg);
+       //    }
+       // });
+
+
+
+       
      }
    , error: function(msg) {
        console.log("Erro: "+msg.msg);
