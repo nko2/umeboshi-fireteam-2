@@ -1,0 +1,170 @@
+body{
+  font-family: 'Helvetica';
+/*  background-image:url(../../mockups/05-sorting-screen-label.png);*/
+  background-repeat:no-repeat;
+  background-size:100% 100%;
+/*  opacity:0.5;*/
+  height:768px;
+  width:100%;
+}
+#main{
+  height:768px;
+  width:100%;
+  position:relative;
+}
+/*********** REGIOES DA TELA ************/
+#top-strip{
+  height:5.7%;
+/*  opacity:0.9;*/
+}
+#score{
+  height:34%;
+  overflow:hidden;
+/*  opacity:0.9;*/
+}
+#buckets{
+  height:60%;
+  overflow:hidden;
+  position:relative;
+}
+#photos{
+  position:absolute;
+  top:5.7%;
+  width:240px;
+  left:50%;
+  margin-left:-120px;
+  background-color: white;
+}
+#photo-throbber{
+  position:absolute;
+  display:none;
+  width:100%;
+  text-align:center;
+  font-size:22px;
+  top:-16px;
+  letter-spacing: 4px;
+  opacity:0.1;
+  -moz-transition-property: opacity;
+  -moz-transition-duration: 1s;
+}
+#photo-throbber.pulse{
+  opacity:0.5;
+}
+#photo-strip{
+  list-style:none;
+  margin:0;
+  padding:0;
+}
+.photo{
+  width:100%;
+  text-align:center;
+  margin:auto;
+  position:absolute;
+}
+.photo img{
+  border-radius:10px;
+  -moz-box-shadow: 0px 10px 20px rgba(0,0,0,0.5);
+  -webkit-box-shadow: 0px 10px 20px rgba(0,0,0,0.5);
+  box-shadow: 0px 10px 20px rgba(0,0,0,0.5);
+}
+.photo.p3{
+  top:20px;
+  left:90px;
+  width:60px;
+  height:60px;
+  line-height:60px;
+  opacity:0.5;
+  z-index: 3;
+}
+.photo.p3 img{max-width:60px;max-height:60px;}
+.photo.p2{
+  top:58px;
+  left:60px;
+  width:120px;
+  height:120px;
+  line-height:120px;
+  opacity:0.8;
+  z-index: 2;
+}
+.photo.p2 img{max-width:120px;max-height:120px;}
+.photo.p1{
+  z-index: 3;
+  top:142px;
+/*  width:240px;*/
+/*  height:240px;*/
+  line-height:240px;
+}
+.photo.p1 img{max-width:240px;max-height:240px;background-color:#fff;}
+
+#photo-label{
+  position:absolute;
+  top:50%;
+  left:100%;
+  margin-left:-13px;
+  margin-top:-15px;
+  display:none;
+}
+#photo-label.skip{
+  left:50% !important;
+  margin-left:-30px !important;
+  margin-top:-15px;
+}
+#photo-label.skip p{
+  padding-left: 14px;
+}
+#photo-label.skip #label-color{
+  display:none;
+}
+#photo-label.visible{
+  display:block;
+}
+#label-color{
+  position:absolute;
+  background-color:red;
+  width:20px;
+  height:20px;
+  border-radius:15px;
+  margin-left:2px;
+  margin-top:1px;
+}
+#photo-label p{
+  position: absolute;
+  margin:0;
+  padding:6px;
+  padding-left:34px;
+  padding-right:12px;
+  margin-left:-5px;
+  margin-top:-5px;
+  line-height:21px;
+  font-size:21px;
+  background-color:#fff;
+  border-radius:15px;
+}
+/** GAMBI PARA O SVG DOS BUCKETS FICAR NA ROTACAO CORRETA **/
+#bucket-background{
+  -moz-transform-origin:left center;
+  -webkit-transform-origin:left center;
+  margin-top: -2505px;
+  margin-left: 50%;
+  -moz-transform: rotate(90deg);
+  -webkit-transform: rotate(90deg);
+}
+/*********** PLACAR ************/
+#score p{
+  display:inline;
+  font-weight:bold;
+  font-size:400px;
+  margin:0;
+  padding:0;
+  position:absolute;
+  opacity:0.5;
+}
+#score-left{
+/*  background-color:red;*/
+}
+#score-right{
+/*  background-color:blue;*/
+  right:0;
+}
+
+

@@ -1,5 +1,5 @@
 var config = {
-  slots: 4,
+  slots: 5,
   photos:[
     {url:'http://farm3.static.flickr.com/2538/4165413563_f0d0c161c9_m.jpg'},
     {url:'http://farm4.static.flickr.com/3441/3923119254_73253efea2_m.jpg'},
@@ -170,6 +170,7 @@ function overWedge(el){
   el.setAttribute('class', 'selecionado');
   document.getElementById('photo-label').style.display = 'block';
   //TROCAR PELO BUCKETNAME
+  console.log(config.bucketnames[wedge_index]);
   document.getElementById('photo-label-text').innerHTML = config.bucketnames[wedge_index];
   document.getElementById('photo-label').className = '';
   // console.log('mostra');
@@ -382,7 +383,6 @@ function updateScoreSize(){
   document.getElementById('score-right').className = 'n-digits-'+length_right;
 }
 function drawBuckets(slots){
-  return false;
   var color_rnd = config.colors[Math.round(Math.random())+2];
   var svg_prefix = "<svg id=\"base\" fill=\"none\" stroke=\"none\" width=\"2500\" height=\"5000\"><g><path transform=\"translate(0, 2500)\" d=\"M3.061616997868383e-13,-5000A5000,5000 0 0,1 ";
   var svg_paths = [
@@ -392,6 +392,7 @@ function drawBuckets(slots){
     "2938.9262614623663,-4045.0849718747368L0,0Z\" class=\"\" fill=\""+ config.colors[4] +"\" fill-rule=\"evenodd\" id=\"wedge0\"/><path id=\"wedge1\" transform=\"translate(0, 2500)\" d=\"M2938.9262614623663,-4045.0849718747368A5000,5000 0 0,1 4755.282581475768,-1545.084971874737L0,0Z\" class=\"\" fill=\""+ config.colors[0] +"\" fill-rule=\"evenodd\"/><path id=\"wedge2\" transform=\"translate(0, 2500)\" d=\"M4755.282581475768,-1545.084971874737A5000,5000 0 0,1 4755.282581475768,1545.084971874737L0,0Z\" class=\"\" fill=\""+ config.colors[3] +"\" fill-rule=\"evenodd\"/><path id=\"wedge3\" transform=\"translate(0, 2500)\" d=\"M4755.282581475768,1545.084971874737A5000,5000 0 0,1 2938.9262614623663,4045.0849718747368L0,0Z\" class=\"\" fill=\""+ config.colors[1] +"\" fill-rule=\"evenodd\"/><path id=\"wedge4\" transform=\"translate(0, 2500)\" d=\"M2938.9262614623663,4045.0849718747368A5000,5000 0 0,1 3.061616997868383e-13,5000L0,0Z\" class=\"\" fill=\""+ config.colors[2] +"\""
   ];
   var svg_sufix = " fill-rule=\"evenodd\"/></g></svg>";
+  document.getElementById('bucket-background').innerHTML = '';
   document.getElementById('bucket-background').innerHTML = svg_prefix + svg_paths[slots-2] + svg_sufix;
   document.getElementById('top-strip').style.backgroundColor = config.colors[0];
   document.getElementById('score').style.backgroundColor = config.colors[1];
@@ -417,11 +418,7 @@ function scoreClicked(){
     getNextPhoto();
   }
 }
-//dom ready
-function pageLoaded(){
-  windowResized();
-  drawBuckets(config.slots);
-  window.addEventListener('resize', windowResized, true);
+function addWedgeListeners(){
   for (i=0; i<config.slots; i++){
     var wedge = document.getElementById('wedge'+i);
     wedgeColors.push(extractRGB(wedge.getAttribute('fill')));
@@ -429,6 +426,39 @@ function pageLoaded(){
     wedge.addEventListener('mouseout', wedgeOut, true);
     wedge.addEventListener('click', evaluateLabeling, true);
   }
-  document.getElementById('score').addEventListener('click', scoreClicked, true);
+}
+function loadVariables(){
+  var quest_id = location.search.substring(location.search.indexOf("q=")+2,location.search.length);
+  // var url = "http://localhost:8080/quests/nlpiqrdz";
+  $.ajax({   
+   url:'/quests/'+quest_id
+   , data: ""
+   , type: "GET"
+   , dataType: 'json'
+   , success: function(msg) {
+       console.log("Sucesso: "+JSON.stringify(msg));
+       config.colors = msg.colour_scheme;
+       console.log(config.bucketnames);
+       config.bucketnames = msg.buckets;
+       console.log(config.bucketnames);
+       config.slots = config.bucketnames.length;
+       drawBuckets(config.slots);
+       addWedgeListeners();
+       var tags_to_load = msg.tags;
+       console.log(tags_to_load);
+     }
+   , error: function(msg) {
+       console.log("Erro: "+msg.msg);
+     }
+  });
   loadFirstPhotos();
+}
+//dom ready
+function pageLoaded(){
+  windowResized();
+  drawBuckets(config.slots);
+  addWedgeListeners();
+  window.addEventListener('resize', windowResized, true);
+  document.getElementById('score').addEventListener('click', scoreClicked, true);
+  loadVariables();
 }
