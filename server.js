@@ -130,7 +130,7 @@ var quests = {};
 // Quest routes
 app.get('/quests/new', function(req, res){
 	res.render('new_quest', {
-		title: "Created yout quest!"
+		title: "Create your quest!"
 		, colour_schemes: ColourSchemes
 	});
 });
@@ -191,10 +191,11 @@ app.get('/quests/:id', function(req, res){
 			if (req.query.callback) output = req.query.callback + '('+output+')';//JSONP
 	    res.end(output);
 		} else {
-			res.render('quest', {
-				title: "You are on quest "+quest_id
-				,quest: JSON.parse(quest)
-			});
+			// res.render('quest', {
+			// 				title: "You are on quest "+quest_id
+			// 				,quest: JSON.parse(quest)
+			// 			});
+			res.redirect('/classificador?q='+quest_id);
 		}	
 	} else {
 		res.render('error', {
