@@ -131,6 +131,7 @@ var quests = {};
 app.get('/quests/new', function(req, res){
 	res.render('new_quest', {
 		title: "Created yout quest!"
+		, colour_schemes: ColourSchemes
 	});
 });
 

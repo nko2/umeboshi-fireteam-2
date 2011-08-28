@@ -8,29 +8,12 @@ form(action='/quests/create', method='post', id="create_quest_form")
     br
     input(id="buckets", type="text", name="buckets")
   p
-    label(for="colour_scheme1")
-    img(src="colour_scheme1") 
-    input(id="colour_scheme1", type="radio", name="colour_scheme", value="1")
-    br
-    label(for="colour_scheme2") 
-    img(src="colour_scheme2") 
-    input(id="colour_scheme2", type="radio", name="colour_scheme", value="2")
-    br
-    label(for="colour_scheme3") 
-    img(src="colour_scheme3") 
-    input(id="colour_scheme3", type="radio", name="colour_scheme", value="3")
-    br
-    label(for="colour_scheme4") 
-    img(src="colour_scheme4") 
-    input(id="colour_scheme4", type="radio", name="colour_scheme", value="4")
-    br
-    label(for="colour_scheme5") 
-    img(src="colour_scheme5") 
-    input(id="colour_scheme5", type="radio", name="colour_scheme", value="5")
-    br
-    label(for="colour_scheme6") 
-    img(src="colour_scheme6") 
-    input(id="colour_scheme6", type="radio", name="colour_scheme", value="6")
+    - for(var i = 1; i < colour_schemes.count()+1; i++)
+        p
+          label(for='colour_scheme#{i}')
+          - for(var j = 0; j < 5; j++)
+              div(class='colour_scheme_item', style='background:#{colour_schemes.get(i)[j]}')
+          input(id='colour_scheme#{i}', type="radio", name="colour_scheme", value='#{i}')
   p 
     input(type="submit")
   p 
