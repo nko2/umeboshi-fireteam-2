@@ -15,8 +15,6 @@ form(action='/quests/create', method='post', id="create_quest_form")
               div(class='colour_scheme_item', style='background:#{colour_schemes.get(i)[j]}')
           input(id='colour_scheme#{i}', type="radio", name="colour_scheme", value='#{i}')
   p 
-    input(type="submit")
-  p 
-    input(type="button", onclick="create_quest();", value="Via Ajax")
+    input(type="button", onclick="create_quest();", value="create quest now")
 script(src='http://code.jquery.com/jquery-1.6.2.js')
 script(src='/javascripts/quest.js')
