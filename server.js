@@ -53,13 +53,9 @@ app.get('/pictures', function(req, res){
 		if(error) console.log(error);
 		else {
 			console.log("Results for tag '%s': %d", req.params.tag, results.length);
-			urls = [];
-			for(var i = 0; i < results.length; i++) {
-				urls.push(PhotoCollection.getURL(results[i]));
-			}
 			res.render('pictures', {
-				title: 'All pictures'
-				, pictures : urls
+				title: 'All pictures ('+ results.length +')'
+				, pictures : results
 			});
 		}
 	});
@@ -70,13 +66,9 @@ app.get('/pictures/:tag', function(req, res){
 		if(error) console.log(error);
 		else {
 			console.log("Results for tag '%s': %d", req.params.tag, results.length);
-			urls = [];
-			for(var i = 0; i < results.length; i++) {
-				urls.push(PhotoCollection.getURL(results[i]));
-			}
 			res.render('pictures', {
-				title: 'Pictures tagged as '+req.params.tag
-				, pictures : urls
+				title: 'Pictures tagged as '+req.params.tag+ ' ('+ results.length +')'
+				, pictures : results
 			});
 		}
 	});
