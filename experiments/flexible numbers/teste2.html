@@ -1,8 +1,5 @@
 <!doctype html>
-<!--[if lt IE 7]> <html class="no-js ie6 oldie" lang="en"> <![endif]-->
-<!--[if IE 7]>    <html class="no-js ie7 oldie" lang="en"> <![endif]-->
-<!--[if IE 8]>    <html class="no-js ie8 oldie" lang="en"> <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<html class="no-js" lang="en">
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
@@ -17,12 +14,23 @@
   <!-- CSS concatenated and minified via ant build script-->
   <link rel="stylesheet" href="css/style.css">
   <!-- end CSS-->
+
+  <script type="text/javascript" src="./protovis.js"></script>
+  
   
   <script>
+  
   function windowResized(){
     var new_h = window.innerHeight;
     document.body.style.height = new_h+'px';
     document.getElementById('main').style.height = new_h+'px';
+  }
+  function updateScoreSize(){
+    var length_left = document.getElementById('score-left').innerHTML.length,
+        length_right = document.getElementById('score-right').innerHTML.length;
+    console.log(document.getElementById('score-left').innerHTML+' '+length_left);
+    document.getElementById('score-left').className = 'n-digits-'+length_left;
+    document.getElementById('score-right').className = 'n-digits-'+length_right;
   }
   function updateNumbers(){
     if (Math.random() < 0.2){
@@ -43,27 +51,35 @@
     }
     updateScoreSize();
   }
-  function updateScoreSize(){
-    var length_left = document.getElementById('score-left').innerHTML.length,
-        length_right = document.getElementById('score-right').innerHTML.length;
-    console.log(document.getElementById('score-left').innerHTML+' '+length_left);
-    document.getElementById('score-left').className = 'n-digits-'+length_left;
-    document.getElementById('score-right').className = 'n-digits-'+length_right;
+  function drawBuckets(){
+    console.log('drawBuckets');
   }
+  function pageLoaded(){
+    windowResized();
+    drawBuckets();
+  }
+
+  var colora = ['#ff00ff', 'green']
+  var panelW = 5000
+  var panelH = 5000
+  pvpanel = new pv.Panel()
+      .width(panelW)
+      .height(panelH)
+    .add(pv.Wedge)
+      .data(pv.normalize([1,1]))
+      .left(0)
+      .bottom(panelH/2)
+      .angle(function(d) {
+        angulo_anterior = d * Math.PI ;
+        return angulo_anterior;
+      })
+      .fillStyle(function(d) colora[this.index])
+      .outerRadius(panelH)
+  
   window.addEventListener('resize', windowResized, true);
   // var interval1 = setInterval(updateNumbers, 2000);
   </script>
   <style>
-@font-face {
-	font-family: 'FrancophilSans';
-	src: url('FrancophilSans.ttf');
-}
-@font-face {
-	font-family: 'FrancophilSans';
-	font-weight: bold;
-	src: url('FrancophilSans-Bold.ttf');
-}
-
 body{
   font-family: 'Helvetica';
   background-image:url(../../mockups/sorting-screen.png);
@@ -141,12 +157,6 @@ body{
   margin-right:19px;
 }
 
-#buckets{
-  height:64.3%;
-  background-color:yellow;
-  overflow:hidden;
-  position:relative;
-}
 #score-left{
   background-color:white;
   float:left;
@@ -156,26 +166,24 @@ body{
   background-color:blue;
   float:right;
 }
+#buckets{
+  height:60%;
+  background-color:orange;
+  overflow:hidden;
+  position:relative;
+}
+#bucket-background{
+  -moz-transform-origin:left center;
+  -webkit-transform-origin:left center;
+  margin-top: -2500px;
+  margin-left: 50%;
+  -moz-transform: rotate(90deg);
+  -webkit-transform: rotate(90deg);
 
-.bucket{
-  position:absolute;
-  width:100%;
-  height:100%;
-  left:-50%;
-  -moz-transform-origin:right 0;
-  -webkit-transform-origin:right 0;
+
 }
-.bucket.b1{
-  background-color:green;
-/*  -180 - 60 */
-  -moz-transform: rotate(-60deg);
-  -webkit-transform: rotate(-60deg);
-}
-.bucket.b2{
-  /*  -180 - 120 */
-  background-color:blue;
-  -moz-transform: rotate(-120deg);
-  -webkit-transform: rotate(-120deg);
+#svg-area{
+  background-color:red;
 }
   </style>
 </head>
@@ -194,9 +202,9 @@ body{
         <p id="score-right">7</p>
       </div>
       <div id="buckets">
-        <div class="bucket b1"></div>
-        <div class="bucket b2"></div>
-        <!-- <div class="bucket b3"></div> -->
+        <div id="bucket-background">
+          <script>pvpanel.root.render();</script>
+        </div>
       </div>
     </div>
     <footer>
@@ -204,7 +212,7 @@ body{
     </footer>
   </div> <!--! end of #container -->
   <script>
-  windowResized();
+  pageLoaded();
   </script>
 </body>
 </html>
