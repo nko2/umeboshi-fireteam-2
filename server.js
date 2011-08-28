@@ -100,7 +100,7 @@ app.post('/pictures/:id/classify/:tag', function(req, res){
 });
 var quests = {};
 // Quest routes
-app.get('/quest/new', function(req, res){
+app.get('/quests/new', function(req, res){
 	var baseURL = QuestUtils.baseUrl(req);
   var blurb = QuestUtils.generateBlurb();
 	pubsubURL = QuestUtils.getPubSubServerURL(req);
@@ -120,6 +120,20 @@ app.get('/quest/new', function(req, res){
  			,questName: blurb
  			,pubsubURL: pubsubURL
   	});
+	}
+});
+
+app.get('/quests', function(req, res){
+	if (req.query.fmt == 'json') {
+		res.writeHead(200, {'Content-Type': 'application/json'})
+		var output = JSON.stringfy({'quests':quests})
+		if (req.query.callback) output = req.query.callback + '('+output+')';//JSONP
+    res.end(output);
+	} else {
+		res.render('all_quests', {
+			title: 'All quests'
+			,quests: quests
+		});	
 	}
 });
 
