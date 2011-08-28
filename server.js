@@ -1,11 +1,13 @@
 // Setup
-var nko_setup = require('./setup/nko').setup;
+
 var  HOSTED_ON_JOYENT = /\/home\/node\/node\-service\/releases\/[^\/]*\/server.js/.test(__filename)
 		,WEBSERVER_PORT = HOSTED_ON_JOYENT ? 80 : 8080
+
 /**
  * Module dependencies.
  */
-
+var NKO_KEY = HOSTED_ON_JOYENT ? '/home/node/nko' : './setup/nko';
+var nko_setup = require(NKO_KEY).setup;
 var express = require('express')
 		, nko = require('nko')(nko_setup.secret);
 
