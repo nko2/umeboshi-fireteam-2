@@ -1,7 +1,7 @@
 // Setup
 
 var  HOSTED_ON_JOYENT = /\/home\/node\/node\-service\/releases\/[^\/]*\/server.js/.test(__filename)
-		,WEBSERVER_PORT = HOSTED_ON_JOYENT ? 80 : 8080
+		,WEBSERVER_PORT   = HOSTED_ON_JOYENT ? 80 : 8080
 
 /**
  * Module dependencies.
@@ -9,9 +9,20 @@ var  HOSTED_ON_JOYENT = /\/home\/node\/node\-service\/releases\/[^\/]*\/server.j
 var NKO_KEY = HOSTED_ON_JOYENT ? '/home/node/nko' : './setup/nko';
 var nko_setup = require(NKO_KEY).setup;
 var express = require('express')
+		, faye = require('faye')
 		, nko = require('nko')(nko_setup.secret)
 		, string = require('./lib/string').String
-		, PhotoCollection = require('./lib/photo_collection').PhotoCollection;
+		, PhotoCollection = require('./lib/photo_collection').PhotoCollection
+		, QuestUtils = require('./lib/quest_utils').QuestUtils;
+
+var pubsub = new faye.NodeAdapter({mount: QuestUtils.getURI(), timeout: 15})
+var host = "staff.mongohq.com"
+	, port = 10034 
+	, database = "nodeko2011"
+	, username = "dqo"
+	, password = "nodeko2011";
+var photo_collection = new PhotoCollection(host, port, database, username, password);
+
 
 var app = module.exports = express.createServer();
 
@@ -36,12 +47,6 @@ app.configure('production', function(){
 });
 
 // Routes
-var host = "staff.mongohq.com"
-	, port = 10034 
-	, database = "nodeko2011"
-	, username = "dqo"
-	, password = "nodeko2011";
-var photo_collection = new PhotoCollection(host, port, database, username, password);
 
 app.get('/', function(req, res){
   res.render('index', {
@@ -49,6 +54,7 @@ app.get('/', function(req, res){
   });
 });
 
+// Pictures routes
 app.get('/pictures', function(req, res){
 	var message = 'All pictures ({count})';
 	photo_collection.all(function(error, results) {
@@ -92,6 +98,34 @@ app.post('/pictures/:id/classify/:tag', function(req, res){
 		}
 	});
 });
+var quests = {};
+// Quest routes
+app.get('/quest/new', function(req, res){
+	var baseURL = QuestUtils.baseUrl(req);
+  var blurb = QuestUtils.generateBlurb();
+	pubsubURL = QuestUtils.getPubSubServerURL(req);
+	var questURL = pubsubURL+"/"+blurb;
+	quests[blurb] = questURL;
+	jsFile = pubsubURL+".js"
+	if (req.query.fmt == 'json') {
+    res.writeHead(200, { "Content-Type": "application/json" })
+    var output = JSON.stringify({ 'quest_key': blurb });
+    if (req.query.callback) output = req.query.callback + '('+output+')';//JSONP
+    res.end(output);
+	} else{
+  	res.render('new_quest', {
+			title: "Quest created!"
+ 			,questURL: questURL
+ 			,pubsubJSFile: jsFile
+ 			,questName: blurb
+ 			,pubsubURL: pubsubURL
+  	});
+	}
+});
 
+
+// Binding and starting up...
 app.listen(WEBSERVER_PORT);
+pubsub.listen(QuestUtils.getFayePort());
 console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);
+console.log("Faye server listening on port %d in %s mode", QuestUtils.getFayePort(), app.settings.env);
