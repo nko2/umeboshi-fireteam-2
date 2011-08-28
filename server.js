@@ -61,10 +61,18 @@ app.get('/pictures', function(req, res){
 		if(error) console.log(error);
 		else {
 			console.log("Results for tag '%s': %d", req.params.tag, results.length);
-			res.render('pictures', {
-				title: message.interpolate({count:results.length})
-				, pictures : results
-			});
+			if (req.query.fmt == 'json') {
+				res.writeHead(200, {'Content-Type': 'application/json'})
+				var output = JSON.stringfy({'pictures':results})
+				if (req.query.callback) output = req.query.callback + '('+output+')';//JSONP
+		    res.end(output);
+			} else {
+				res.render('pictures', {
+					title: message.interpolate({count:results.length})
+					, pictures : results
+				});
+				
+			}
 		}
 	});
 });
@@ -75,24 +83,43 @@ app.get('/pictures/:tag', function(req, res){
 		if(error) console.log(error);
 		else {
 			console.log("Results for tag '%s': %d", req.params.tag, results.length);
-			res.render('pictures', {
-				title: message.interpolate({tag:req.params.tag, count:results.length})
-				, pictures : results
-			});
+			if (req.query.fmt == 'json') {
+				res.writeHead(200, {'Content-Type': 'application/json'})
+				var output = JSON.stringfy({'pictures':results})
+				if (req.query.callback) output = req.query.callback + '('+output+')';//JSONP
+		    res.end(output);
+			} else {
+				res.render('pictures', {
+					title: message.interpolate({tag:req.params.tag, count:results.length})
+					, pictures : results
+				});
+			}
 		}
 	});
 });
 
-app.post('/pictures/:id/classify/:tag', function(req, res){
-	photo_collection.findByID(req.params.id, function(error, photo){
+app.post('/pictures/classify', function(req, res){
+	console.log(req.body.id);
+	console.log(req.body.tag);
+	photo_collection.findByID(req.body.id, function(error, photo){
 		if(error) {
 			console.log(error);
 		} else {
-			photo_collection.classify(photo, req.params.tag, function(error, photo){
+			photo_collection.classify(photo, req.body.tag, function(error, photo){
 				if(error) {
 					console.log(error);
 				} else {
 					console.log("CLASSIFIED");
+					if (req.query.fmt == 'json') {
+						res.writeHead(200, {'Content-Type': 'application/json'})
+						var output = JSON.stringfy({'result':'OK'})
+						if (req.query.callback) output = req.query.callback + '('+output+')';//JSONP
+				    res.end(output);
+					} else {
+						res.render('picture_classified', {
+							title: "Picture successfully classified as "+req.body.tag
+						});
+					}
 				}
 			});
 		}
