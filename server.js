@@ -193,7 +193,7 @@ app.get('/quests/:id', function(req, res){
 		} else {
 			res.render('quest', {
 				title: "You are on quest "+quest_id
-				,quest: quest
+				,quest: JSON.parse(quest)
 			});
 		}	
 	} else {
