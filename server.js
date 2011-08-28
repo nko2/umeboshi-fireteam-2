@@ -9,7 +9,8 @@ var  HOSTED_ON_JOYENT = /\/home\/node\/node\-service\/releases\/[^\/]*\/server.j
 var NKO_KEY = HOSTED_ON_JOYENT ? '/home/node/nko' : './setup/nko';
 var nko_setup = require(NKO_KEY).setup;
 var express = require('express')
-		, nko = require('nko')(nko_setup.secret);
+		, nko = require('nko')(nko_setup.secret)
+		, PhotoCollection = require('./lib/photo_collection').PhotoCollection;
 
 var app = module.exports = express.createServer();
 
@@ -34,11 +35,51 @@ app.configure('production', function(){
 });
 
 // Routes
+var host = "staff.mongohq.com"
+	, port = 10034 
+	, database = "nodeko2011"
+	, username = "dqo"
+	, password = "nodeko2011";
+var photo_collection = new PhotoCollection(host, port, database, username, password);
 
 app.get('/', function(req, res){
   res.render('index', {
     title: 'Express'
   });
+});
+
+app.get('/pictures', function(req, res){
+	photo_collection.all(function(error, results) {
+		if(error) console.log(error);
+		else {
+			console.log("Results for tag '%s': %d", req.params.tag, results.length);
+			urls = [];
+			for(var i = 0; i < results.length; i++) {
+				urls.push(PhotoCollection.getURL(results[i]));
+			}
+			res.render('pictures', {
+				title: 'Pictures tagged as '+req.params.tag
+				, pictures : urls
+			});
+		}
+	});
+});
+
+app.get('/pictures/:tag', function(req, res){
+	photo_collection.withTag(req.params.tag, function(error, results) {
+		if(error) console.log(error);
+		else {
+			console.log("Results for tag '%s': %d", req.params.tag, results.length);
+			urls = [];
+			for(var i = 0; i < results.length; i++) {
+				urls.push(PhotoCollection.getURL(results[i]));
+			}
+			res.render('pictures', {
+				title: 'Pictures tagged as '+req.params.tag
+				, pictures : urls
+			});
+		}
+	});
 });
 
 app.listen(WEBSERVER_PORT);

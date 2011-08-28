@@ -11,6 +11,13 @@ function listMongoPictures() {
 		else {
 			results.forEach(function(photo){				
 				console.log(PhotoCollection.getURL(photo));
+				this.photo_collection.save(photo, function(error, item){
+					if(error) {
+						console.log(error);
+					} else {
+						console.log("Photo saved!");
+					}
+				});
 			});
 		}
 	});
@@ -37,11 +44,13 @@ function countWithTag() {
 	});
 }
 
+
 function run() {
 	connect("staff.mongohq.com", 10034, "nodeko2011", "dqo", "nodeko2011");
 	// listMongoPictures();	
-	// count();
-	countWithTag();
+	count();
+	// countWithTag();
+	// listAndUpdateMongoPictures();
 	setTimeout(run, 60000);
 }
 

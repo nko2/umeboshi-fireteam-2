@@ -83,7 +83,7 @@ function callback(res){
 								if(error) {
 									console.log(error);
 								} else {
-									console.log("Photo saved!");
+									console.log("Photo saved!"+item);
 								}
 							});
             }
