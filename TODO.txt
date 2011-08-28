@@ -2,8 +2,9 @@
 
 ## Tela do classificador
 
-* Cores da paleta selecionada pelo criador da quest
-* CSS da fila de fotos
+* Numeros do placar
+OK * Cores da paleta selecionada pelo criador da quest
+OK * CSS da fila de fotos
 * Labels nas rampas posicionados via javascript
 * Integrar o codigo do swipe (swipe angle)
   * Opcao de skip (swipe para cima)
@@ -60,3 +61,7 @@
 * Enviar numero de fotos classificadas numa quest
 
 ## Listar Resultados de uma quest
+
+## Express
+
+* converter os htmls estaticos para jade templates
