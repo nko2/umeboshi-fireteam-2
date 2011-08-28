@@ -74,8 +74,20 @@ app.get('/pictures/:tag', function(req, res){
 	});
 });
 
-app.get('/', function(req, res){
-	
+app.post('/pictures/:id/classify/:tag', function(req, res){
+	photo_collection.findByID(req.params.id, function(error, photo){
+		if(error) {
+			console.log(error);
+		} else {
+			photo_collection.classify(photo, req.params.tag, function(error, photo){
+				if(error) {
+					console.log(error);
+				} else {
+					console.log("CLASSIFIED");
+				}
+			});
+		}
+	});
 });
 
 app.listen(WEBSERVER_PORT);
