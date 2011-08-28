@@ -1,10 +1,20 @@
 h1= title
 #pictures
   - each picture in pictures
-    div.picture
-      img(src=picture.url, title=picture.title)
-      a(href=picture.url, target='_blank') Link
-      = " Tags: "
-      - each tag in picture.tags
-        = " "
-        a(href='/pictures/#{tag}') #{tag}
+    div
+      div.picture
+        img(src=picture.url, title=picture.title)
+      div.picture_metadata
+        p= 'ID: '+ picture.id +' '
+        p 
+          a(href=picture.url, target='_blank') Link
+        p= " Tags: "
+        - each tag in picture.tags
+          = " "
+          a(href='/pictures/#{tag}') #{tag}
+        p
+        - if(picture.classified_as) 
+          = " Also classified as: "
+          - each class_tag in picture.classified_as
+            = " "
+            a(href='/pictures/#{class_tag}') #{class_tag}
