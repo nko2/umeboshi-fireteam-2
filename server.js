@@ -63,7 +63,7 @@ app.get('/pictures', function(req, res){
 		else {
 			console.log("Results for tag '%s': %d", req.params.tag, results.length);
 			if (req.header('Accept').indexOf('application/json') != -1) {
-				// res.writeHead(200, {'Content-Type': 'application/json'})
+				res.writeHead(200, {'Content-Type': 'application/json'})
 				// 				var output = JSON.stringfy({'pictures':results})
 				// 				if (req.query.callback) output = req.query.callback + '('+output+')';//JSONP
 				// 		    res.end(output);
@@ -105,6 +105,7 @@ app.get('/pictures/:tag', function(req, res){
 		else {
 			console.log("Results for tag '%s': %d", req.params.tag, results.length);
 			if (req.header('Accept').indexOf('application/json') != -1) {
+				res.writeHead(200, {'Content-Type': 'application/json'})
 				res.header('Content-Type', 'application/json')
 				var json = '[';
 				for(var i = 0; i < results.length; i++) {
