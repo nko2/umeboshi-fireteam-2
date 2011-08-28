@@ -40,12 +40,13 @@ table .last{
 }
 
 #micro-tag{
-	width:64px;
+	width:73px;
 	height:38px;
 	position:fixed;
-	right:10px;
-	bottom:3px;
+	right:0%;
+	bottom:0%;
 	background-image:url(micro-tag.png);
+	background-repeat:no-repeat;
 }
 
 table.div{
