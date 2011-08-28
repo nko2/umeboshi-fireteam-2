@@ -139,7 +139,7 @@ app.post('/quests/create', function(req, res){
 	var baseURL = QuestUtils.baseUrl(req);
   var blurb = QuestUtils.generateBlurb();
 	var pubsubURL = QuestUtils.getPubSubServerURL(req);
-	var questURL = QuestUtils.getQuestURL(req)+"/"+blurb;
+	var questURL = QuestUtils.getQuestURL(req)+blurb;
 	var jsFile = pubsubURL+".js"
 	var tags = req.body.tags.split(",")
 	var buckets = req.body.buckets.split(",")
@@ -195,7 +195,7 @@ app.get('/quests/:id', function(req, res){
 			// 				title: "You are on quest "+quest_id
 			// 				,quest: JSON.parse(quest)
 			// 			});
-			res.redirect('/classificador?q='+quest_id);
+			res.redirect('/classificador/index.html?q='+quest_id);
 		}	
 	} else {
 		res.render('error', {
