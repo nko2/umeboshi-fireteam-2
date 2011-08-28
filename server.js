@@ -58,7 +58,7 @@ app.get('/pictures', function(req, res){
 				urls.push(PhotoCollection.getURL(results[i]));
 			}
 			res.render('pictures', {
-				title: 'Pictures tagged as '+req.params.tag
+				title: 'All pictures'
 				, pictures : urls
 			});
 		}
