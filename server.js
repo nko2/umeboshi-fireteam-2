@@ -184,9 +184,8 @@ app.get('/quests/:id', function(req, res){
 	var quest_id = req.params.id
 	var quest = quests[quest_id]
 	if(quest) {
-		// if (req.header('Accept').indexOf('application/json') != -1) {
+		if (req.header('Accept').indexOf('application/json') != -1) {
 		console.log(quest)
-		if(true) {
 			res.writeHead(200, {'Content-Type': 'application/json'})
 			var output = quest
 			if (req.query.callback) output = req.query.callback + '('+output+')';//JSONP
