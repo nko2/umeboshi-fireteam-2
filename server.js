@@ -151,10 +151,11 @@ app.post('/quests/create', function(req, res){
 							,tags: tags
 							,buckets: buckets
 							,colour_scheme: ColourSchemes.get(colour_scheme)}
-	quests[blurb] = quest;
+	quests[blurb] = JSON.stringify(quest);
 	if (req.header('Accept').indexOf('application/json') != -1) {
     res.writeHead(200, { "Content-Type": "application/json" })
     var output = JSON.stringify(quest);
+		console.log(output);
     if (req.query.callback) output = req.query.callback + '('+output+')';//JSONP
     res.end(output);
 	} else{
@@ -183,9 +184,11 @@ app.get('/quests/:id', function(req, res){
 	var quest_id = req.params.id
 	var quest = quests[quest_id]
 	if(quest) {
-		if (req.header('Accept').indexOf('application/json') != -1) {
+		// if (req.header('Accept').indexOf('application/json') != -1) {
+		console.log(quest)
+		if(true) {
 			res.writeHead(200, {'Content-Type': 'application/json'})
-			var output = JSON.stringfy({'quest':quest})
+			var output = quest
 			if (req.query.callback) output = req.query.callback + '('+output+')';//JSONP
 	    res.end(output);
 		} else {
