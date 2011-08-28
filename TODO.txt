@@ -1,5 +1,62 @@
-- Panda calls working
-- Store responses to filesystem
-- Migrate responses to database
-- Deploy on Linode or joyent
-- populate DB
+# Client / Templates
+
+## Tela do classificador
+
+* Cores da paleta selecionada pelo criador da quest
+* CSS da fila de fotos
+* Labels nas rampas posicionados via javascript
+* Integrar o codigo do swipe (swipe angle)
+  * Opcao de skip (swipe para cima)
+* Animacao imagens pos-swipe 
+
+==========
+
+## Tela de criar quest
+
+* Opcoes:
+  * filtrar por tags
+  * definir numero e nome dos buckets
+  * escolher paleta
+    * botao random para paleta
+  * telinha de preview
+* se der: redundancia
+
+==========
+
+## Tela de pos publicacao
+
+* URL
+* botao twitter
+
+==========
+
+## Tela dos resultados
+
+* Só listar, n colunas (2 a 5)
+  * se der: animar
+
+==========
+
+## Home Page
+
+* Logo
+* Video
+* Descricao
+
+-----------------------------------
+
+# Server
+
+## Quests
+
+* Gerar URL de editar quest
+* Gerar URL de participar da quest
+* Criar/Manter sala de quest
+
+## API (classificador)
+
+* Receber votos/classificacoes
+* Enviar stream de fotos de uma quest
+* Enviar numero de fotos classificadas numa quest
+
+## Listar Resultados de uma quest
