@@ -74,5 +74,9 @@ app.get('/pictures/:tag', function(req, res){
 	});
 });
 
+app.get('/', function(req, res){
+	
+});
+
 app.listen(WEBSERVER_PORT);
 console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);

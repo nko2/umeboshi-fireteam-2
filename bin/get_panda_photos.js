@@ -77,7 +77,7 @@ function callback(res){
         var response = JSON.parse(this.data);
         if (response.stat == 'ok'){
           response.photos.photo.forEach(function(item){
-            if (item.license > 0){ //creative commons photos
+            //if (item.license > 0){ //creative commons photos
               console.log(item);
 							this.photo_collection.save(item, function(error, item){
 								if(error) {
@@ -86,7 +86,7 @@ function callback(res){
 									console.log("Photo saved!"+item);
 								}
 							});
-            }
+            //}
           });
           var delay =  Math.abs((1000 * (response.photos.lastupdate + response.photos.interval)) - new Date().getTime());
           console.log(delay);
