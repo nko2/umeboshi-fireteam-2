@@ -1,20 +1,21 @@
-form(action='/quests/create', method='post', id="create_quest_form")
-  p 
-    label(for="tags") Tags (comma separated) 
-    br
-    input(id="tags", type="text", name="tags")
-  p
-    label(for="buckets") Buckets (comma separated)
-    br
-    input(id="buckets", type="text", name="buckets")
-  p
-    - for(var i = 1; i < colour_schemes.count()+1; i++)
-        p
-          label(for='colour_scheme#{i}')
-          - for(var j = 0; j < 5; j++)
-              div(class='colour_scheme_item', style='background:#{colour_schemes.get(i)[j]}')
-          input(id='colour_scheme#{i}', type="radio", name="colour_scheme", value='#{i}')
-  p 
-    input(type="button", onclick="create_quest();", value="create quest now")
+div.form_container
+  form(action='/quests/create', method='post', id="create_quest_form")
+    p 
+      label(for="tags") Tags (comma separated) 
+      br
+      input(id="tags", type="text", name="tags")
+    p
+      label(for="buckets") Buckets (comma separated)
+      br
+      input(id="buckets", type="text", name="buckets")
+    p
+      - for(var i = 1; i < colour_schemes.count()+1; i++)
+          p
+            label(for='colour_scheme#{i}')
+            - for(var j = 0; j < 5; j++)
+                div(class='colour_scheme_item', style='background:#{colour_schemes.get(i)[j]}')
+            input(id='colour_scheme#{i}', type="radio", name="colour_scheme", value='#{i}')
+    p 
+      input(type="button", onclick="create_quest();", value="create quest now")
 script(src='http://code.jquery.com/jquery-1.6.2.js')
 script(src='/javascripts/quest.js')

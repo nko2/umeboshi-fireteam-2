@@ -183,10 +183,17 @@ app.get('/quests/:id', function(req, res){
 	var quest_id = req.params.id
 	var quest = quests[quest_id]
 	if(quest) {
-		res.render('quest', {
-			title: "You are on quest "+quest_id
-			,quest: quest
-		});		
+		if (req.header('Accept').indexOf('application/json') != -1) {
+			res.writeHead(200, {'Content-Type': 'application/json'})
+			var output = JSON.stringfy({'quest':quest})
+			if (req.query.callback) output = req.query.callback + '('+output+')';//JSONP
+	    res.end(output);
+		} else {
+			res.render('quest', {
+				title: "You are on quest "+quest_id
+				,quest: quest
+			});
+		}	
 	} else {
 		res.render('error', {
 			title: 'Ops, there is no such quest!'
