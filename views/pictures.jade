@@ -2,19 +2,20 @@ h1= title
 ul#pictures
   - each picture in pictures
     li.picture
-      div.photo
-        img(src=picture.url, title=picture.title)
-      div.picture_metadata
-        p= 'ID: '+ picture.id +' '
-        p 
-          a(href=picture.url, target='_blank') Link
-        p= " Tags: "
-        - each tag in picture.tags
-          = " "
-          a(href='/pictures/#{tag}') #{tag}
-        p
-        - if(picture.classified_as) 
-          = " Also classified as: "
-          - each class_tag in picture.classified_as
+      div.picture_container
+        div.photo
+          img(src=picture.url, title=picture.title)
+        div.picture_metadata
+          p= 'ID: '+ picture.id +' '
+          p 
+            a(href=picture.url, target='_blank') Link
+          p= " Tags: "
+          - each tag in picture.tags
             = " "
-            a(href='/pictures/#{class_tag}') #{class_tag}
+            a(href='/pictures/#{tag}') #{tag}
+          p
+          - if(picture.classified_as) 
+            = " Also classified as: "
+            - each class_tag in picture.classified_as
+              = " "
+              a(href='/pictures/#{class_tag}') #{class_tag}
