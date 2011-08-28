@@ -13,7 +13,8 @@ var express = require('express')
 		, nko = require('nko')(nko_setup.secret)
 		, string = require('./lib/string').String
 		, PhotoCollection = require('./lib/photo_collection').PhotoCollection
-		, QuestUtils = require('./lib/quest_utils').QuestUtils;
+		, QuestUtils = require('./lib/quest_utils').QuestUtils
+		, ColourSchemes = require('./lib/colour_schemes').ColourSchemes;
 
 var pubsub = new faye.NodeAdapter({mount: QuestUtils.getFayeURI(), timeout: 15})
 var host = "staff.mongohq.com"
@@ -148,7 +149,7 @@ app.post('/quests/create', function(req, res){
 							,pubsubURL: pubsubURL
 							,tags: tags
 							,buckets: buckets
-							,colour_scheme: colour_scheme}
+							,colour_scheme: ColourSchemes.get(colour_scheme)}
 	quests[blurb] = quest;
 	if (req.header('Accept').indexOf('application/json') != -1) {
     res.writeHead(200, { "Content-Type": "application/json" })
