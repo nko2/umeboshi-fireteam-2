@@ -38,8 +38,8 @@ function countWithTag() {
 function run() {
 	connect("staff.mongohq.com", 10034, "nodeko2011", "dqo", "nodeko2011");
 	// listMongoPictures();	
-	// count();
-	countWithTag();
+	count();
+	// countWithTag();
 	setTimeout(run, 60000);
 }
 
