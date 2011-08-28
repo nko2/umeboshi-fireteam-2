@@ -84,11 +84,16 @@ app.get('/pictures/:tag', function(req, res){
 		if(error) console.log(error);
 		else {
 			console.log("Results for tag '%s': %d", req.params.tag, results.length);
-			if (req.header('Accept').indexOf('application/json') != -1) {
-				res.writeHead(200, {'Content-Type': 'application/json'})
-				var output = JSON.stringfy({'pictures':results})
-				if (req.query.callback) output = req.query.callback + '('+output+')';//JSONP
-		    res.end(output);
+			// if (req.header('Accept').indexOf('application/json') != -1) {
+			if(true) {
+				res.header('Content-Type', 'application/json')
+				// var output = JSON.stringfy({'pictures':results})
+				// 				if (req.query.callback) output = req.query.callback + '('+output+')';//JSONP
+				// 		    res.end(output);
+				res.render('pictures.json.jade', {
+					layout: false
+					, pictures : results
+				});
 			} else {
 				res.render('pictures', {
 					title: message.interpolate({tag:req.params.tag, count:results.length})
