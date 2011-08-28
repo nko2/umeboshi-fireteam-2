@@ -170,7 +170,7 @@ function overWedge(el){
   el.setAttribute('class', 'selecionado');
   document.getElementById('photo-label').style.display = 'block';
   //TROCAR PELO BUCKETNAME
-  console.log(config.bucketnames[wedge_index]);
+  // console.log(config.bucketnames[wedge_index]);
   document.getElementById('photo-label-text').innerHTML = config.bucketnames[wedge_index];
   document.getElementById('photo-label').className = '';
   // console.log('mostra');
@@ -201,7 +201,7 @@ function touchstart(event){
 		//atualiza as variaveis iniciais
 		touch_startX = touch.pageX;
 		touch_startY = touch.pageY;
-		console.log('start: ' + touch_startX + "/" + touch_startX);
+    // console.log('start: ' + touch_startX + "/" + touch_startX);
   } else {
 	touch_oneFingerOnly = false;
 }
@@ -260,7 +260,6 @@ function ciclePhotos(){
       var throwawayNode = pl.parentNode.removeChild(pl);
       slot.appendChild(tempnode);
       var imageWidth = imgsrc.offsetWidth;
-      console.log(i + ' ' +imageWidth);
       tempnode.style.marginLeft = -13 -(240 - imageWidth)/2 + 'px';
     }
   }
@@ -299,7 +298,7 @@ function touchend(event){
 	}
 }
 function touchcancel(event){
-	console.log('cancel');
+  // console.log('cancel');
 }
 
 
@@ -346,7 +345,7 @@ function resizeScore(ww, wh){
         Math.round(novaAltura * 1.53),
         Math.round(novaAltura * 1.53)
       ];
-      console.log(novaAltura);
+      // console.log(novaAltura);
       fontLettersSpacing = [
         Math.round(novaAltura * - 0.07),
         Math.round(novaAltura * - 0.07),
@@ -361,7 +360,7 @@ function resizeScore(ww, wh){
   // score_left.style.height = fontLineHeightsLeft[length_left-1] + 'px';
   score_left.style.fontSize = fontSizesLeft[length_left-1] + 'px';
   // score_left.style.letterSpacing = fontLettersSpacing[length_left-1] + 'px';
-  console.log(fontLettersSpacing[length_left-1]);
+  // console.log(fontLettersSpacing[length_left-1]);
   
   // font-size:400px;
   // line-height:400px;
@@ -436,16 +435,13 @@ function loadVariables(){
    , type: "GET"
    , dataType: 'json'
    , success: function(msg) {
-       console.log("Sucesso: "+JSON.stringify(msg));
        config.colors = msg.colour_scheme;
-       console.log(config.bucketnames);
        config.bucketnames = msg.buckets;
-       console.log(config.bucketnames);
        config.slots = config.bucketnames.length;
        drawBuckets(config.slots);
        addWedgeListeners();
+       resetaCoresFatias();
        var tags_to_load = msg.tags;
-       console.log(tags_to_load);
      }
    , error: function(msg) {
        console.log("Erro: "+msg.msg);
@@ -456,8 +452,8 @@ function loadVariables(){
 //dom ready
 function pageLoaded(){
   windowResized();
-  drawBuckets(config.slots);
-  addWedgeListeners();
+  // drawBuckets(config.slots);
+  // addWedgeListeners();
   window.addEventListener('resize', windowResized, true);
   document.getElementById('score').addEventListener('click', scoreClicked, true);
   loadVariables();

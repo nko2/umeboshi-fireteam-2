@@ -161,9 +161,11 @@ body{
 }
 #score-left{
 /*  background-color:red;*/
+visibility:hidden;
 }
 #score-right{
 /*  background-color:blue;*/
+visibility:hidden;
   right:0;
 }
 
