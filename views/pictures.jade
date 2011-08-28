@@ -25,3 +25,6 @@ ul#pictures
             - each class_tag in picture.classified_as
               = " "
               a(href='/pictures/#{class_tag}') #{class_tag}
+a(onclick="get_pictures()", href="#") AAAA
+script(src='http://code.jquery.com/jquery-1.6.2.js')
+script(src='/javascripts/quest.js')

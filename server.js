@@ -63,10 +63,30 @@ app.get('/pictures', function(req, res){
 		else {
 			console.log("Results for tag '%s': %d", req.params.tag, results.length);
 			if (req.header('Accept').indexOf('application/json') != -1) {
-				res.writeHead(200, {'Content-Type': 'application/json'})
-				var output = JSON.stringfy({'pictures':results})
-				if (req.query.callback) output = req.query.callback + '('+output+')';//JSONP
-		    res.end(output);
+				// res.writeHead(200, {'Content-Type': 'application/json'})
+				// 				var output = JSON.stringfy({'pictures':results})
+				// 				if (req.query.callback) output = req.query.callback + '('+output+')';//JSONP
+				// 		    res.end(output);
+				res.header('Content-Type', 'application/json')
+				var json = '[';
+				for(var i = 0; i < results.length; i++) {
+					json += "{ title: '"+results[i].title+"',"
+					json += "id: '"+results[i].id+"',"
+					json += "secret: '"+results[i].secret+"',"
+					json += "server: '"+results[i].server+"',"
+					json += "farm: "+results[i].farm+","
+					json += "owner: '"+results[i].owner+"',"
+					json += "ownername: '"+results[i].ownername+"',"
+					json += "license: '"+results[i].license+"',"
+					json += "tags: [ 'sunset', 'girl', 'field', 'august', 'cristinaviscu' ],"
+					json += "date_upload: '"+results[i].date_upload+"',"
+					json += "date_taken: '"+results[i].date_taken+"',"
+					json += "url: '"+results[i].url+"',"
+					json += "_id: "+results[i]._id+" }"
+					if(i != results.length - 1) json += ", "
+				}
+				json += ']'
+				res.end(json);
 			} else {
 				res.render('pictures', {
 					title: message.interpolate({count:results.length})
@@ -84,16 +104,27 @@ app.get('/pictures/:tag', function(req, res){
 		if(error) console.log(error);
 		else {
 			console.log("Results for tag '%s': %d", req.params.tag, results.length);
-			// if (req.header('Accept').indexOf('application/json') != -1) {
-			if(true) {
+			if (req.header('Accept').indexOf('application/json') != -1) {
 				res.header('Content-Type', 'application/json')
-				// var output = JSON.stringfy({'pictures':results})
-				// 				if (req.query.callback) output = req.query.callback + '('+output+')';//JSONP
-				// 		    res.end(output);
-				res.render('pictures.json.jade', {
-					layout: false
-					, pictures : results
-				});
+				var json = '[';
+				for(var i = 0; i < results.length; i++) {
+					json += "{ title: '"+results[i].title+"',"
+					json += "id: '"+results[i].id+"',"
+					json += "secret: '"+results[i].secret+"',"
+					json += "server: '"+results[i].server+"',"
+					json += "farm: "+results[i].farm+","
+					json += "owner: '"+results[i].owner+"',"
+					json += "ownername: '"+results[i].ownername+"',"
+					json += "license: '"+results[i].license+"',"
+					json += "tags: [ 'sunset', 'girl', 'field', 'august', 'cristinaviscu' ],"
+					json += "date_upload: '"+results[i].date_upload+"',"
+					json += "date_taken: '"+results[i].date_taken+"',"
+					json += "url: '"+results[i].url+"',"
+					json += "_id: "+results[i]._id+" }"
+					if(i != results.length - 1) json += ", "
+				}
+				json += ']'
+				res.end(json);
 			} else {
 				res.render('pictures', {
 					title: message.interpolate({tag:req.params.tag, count:results.length})

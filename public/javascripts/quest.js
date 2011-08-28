@@ -13,3 +13,24 @@ function create_quest() {
 			}
 	});
 }
+
+function get_pictures() {
+	$.ajax({
+		url:'/pictures/girl'
+		, type: "GET"
+		, dataType: 'json'
+		, success: function(msg) {
+				var girls = msg;
+				for(var i = 0; i < girls.length; i++) {
+					alert(girls[i].url);
+				}
+			}
+		, error: function(msg) {
+				alert("Erro: "+msg['msg']);
+				var girls = msg;
+				for(var i = 0; i < girls.length; i++) {
+					alert(girls[i].url);
+				}
+			}
+	});	
+}
