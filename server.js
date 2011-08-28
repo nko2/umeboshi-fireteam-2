@@ -1,7 +1,7 @@
 // Setup
 
 var  HOSTED_ON_JOYENT = /\/home\/node\/node\-service\/releases\/[^\/]*\/server.js/.test(__filename)
-		,WEBSERVER_PORT = HOSTED_ON_JOYENT ? 80 : 8080
+		,WEBSERVER_PORT   = HOSTED_ON_JOYENT ? 80 : 8080
 
 /**
  * Module dependencies.
@@ -9,9 +9,21 @@ var  HOSTED_ON_JOYENT = /\/home\/node\/node\-service\/releases\/[^\/]*\/server.j
 var NKO_KEY = HOSTED_ON_JOYENT ? '/home/node/nko' : './setup/nko';
 var nko_setup = require(NKO_KEY).setup;
 var express = require('express')
+		, faye = require('faye')
 		, nko = require('nko')(nko_setup.secret)
 		, string = require('./lib/string').String
-		, PhotoCollection = require('./lib/photo_collection').PhotoCollection;
+		, PhotoCollection = require('./lib/photo_collection').PhotoCollection
+		, QuestUtils = require('./lib/quest_utils').QuestUtils
+		, ColourSchemes = require('./lib/colour_schemes').ColourSchemes;
+
+var pubsub = new faye.NodeAdapter({mount: QuestUtils.getFayeURI(), timeout: 15})
+var host = "staff.mongohq.com"
+	, port = 10034 
+	, database = "nodeko2011"
+	, username = "dqo"
+	, password = "nodeko2011";
+var photo_collection = new PhotoCollection(host, port, database, username, password);
+
 
 var app = module.exports = express.createServer();
 
@@ -36,12 +48,6 @@ app.configure('production', function(){
 });
 
 // Routes
-var host = "staff.mongohq.com"
-	, port = 10034 
-	, database = "nodeko2011"
-	, username = "dqo"
-	, password = "nodeko2011";
-var photo_collection = new PhotoCollection(host, port, database, username, password);
 
 app.get('/', function(req, res){
   res.render('index', {
@@ -49,16 +55,25 @@ app.get('/', function(req, res){
   });
 });
 
+// Pictures routes
 app.get('/pictures', function(req, res){
 	var message = 'All pictures ({count})';
 	photo_collection.all(function(error, results) {
 		if(error) console.log(error);
 		else {
 			console.log("Results for tag '%s': %d", req.params.tag, results.length);
-			res.render('pictures', {
-				title: message.interpolate({count:results.length})
-				, pictures : results
-			});
+			if (req.header('Accept').indexOf('application/json') != -1) {
+				res.writeHead(200, {'Content-Type': 'application/json'})
+				var output = JSON.stringfy({'pictures':results})
+				if (req.query.callback) output = req.query.callback + '('+output+')';//JSONP
+		    res.end(output);
+			} else {
+				res.render('pictures', {
+					title: message.interpolate({count:results.length})
+					, pictures : results
+				});
+				
+			}
 		}
 	});
 });
@@ -69,29 +84,119 @@ app.get('/pictures/:tag', function(req, res){
 		if(error) console.log(error);
 		else {
 			console.log("Results for tag '%s': %d", req.params.tag, results.length);
-			res.render('pictures', {
-				title: message.interpolate({tag:req.params.tag, count:results.length})
-				, pictures : results
-			});
+			if (req.header('Accept').indexOf('application/json') != -1) {
+				res.writeHead(200, {'Content-Type': 'application/json'})
+				var output = JSON.stringfy({'pictures':results})
+				if (req.query.callback) output = req.query.callback + '('+output+')';//JSONP
+		    res.end(output);
+			} else {
+				res.render('pictures', {
+					title: message.interpolate({tag:req.params.tag, count:results.length})
+					, pictures : results
+				});
+			}
 		}
 	});
 });
 
-app.post('/pictures/:id/classify/:tag', function(req, res){
-	photo_collection.findByID(req.params.id, function(error, photo){
+app.post('/pictures/classify', function(req, res){
+	console.log(req.body.id);
+	console.log(req.body.tag);
+	photo_collection.findByID(req.body.id, function(error, photo){
 		if(error) {
 			console.log(error);
 		} else {
-			photo_collection.classify(photo, req.params.tag, function(error, photo){
+			photo_collection.classify(photo, req.body.tag, function(error, photo){
 				if(error) {
 					console.log(error);
 				} else {
 					console.log("CLASSIFIED");
+					if (req.header('Accept').indexOf('application/json') != -1) {
+						res.writeHead(200, {'Content-Type': 'application/json'})
+						var output = JSON.stringfy({'result':'OK'})
+						if (req.query.callback) output = req.query.callback + '('+output+')';//JSONP
+				    res.end(output);
+					} else {
+						res.render('picture_classified', {
+							title: "Picture successfully classified as "+req.body.tag
+						});
+					}
 				}
 			});
 		}
 	});
 });
+var quests = {};
+// Quest routes
+app.get('/quests/new', function(req, res){
+	res.render('new_quest', {
+		title: "Created yout quest!"
+	});
+});
 
+app.post('/quests/create', function(req, res){
+	var baseURL = QuestUtils.baseUrl(req);
+  var blurb = QuestUtils.generateBlurb();
+	var pubsubURL = QuestUtils.getPubSubServerURL(req);
+	var questURL = QuestUtils.getQuestURL(req)+"/"+blurb;
+	var jsFile = pubsubURL+".js"
+	var tags = req.body.tags.split(",")
+	var buckets = req.body.buckets.split(",")
+	var colour_scheme = req.body.colour_scheme.split(",")
+	var quest = {questURL: questURL
+							,pubsubJSFile: jsFile
+							,questName: blurb
+							,pubsubURL: pubsubURL
+							,tags: tags
+							,buckets: buckets
+							,colour_scheme: ColourSchemes.get(colour_scheme)}
+	quests[blurb] = quest;
+	if (req.header('Accept').indexOf('application/json') != -1) {
+    res.writeHead(200, { "Content-Type": "application/json" })
+    var output = JSON.stringify(quest);
+    if (req.query.callback) output = req.query.callback + '('+output+')';//JSONP
+    res.end(output);
+	} else{
+  	res.render('quest_created', {
+			title: "Quest created!"
+ 			,quest: quest
+  	});
+	}
+});
+
+app.get('/quests', function(req, res){
+	if (req.header('Accept').indexOf('application/json') != -1) {
+		res.writeHead(200, {'Content-Type': 'application/json'})
+		var output = JSON.stringfy({'quests':quests})
+		if (req.query.callback) output = req.query.callback + '('+output+')';//JSONP
+    res.end(output);
+	} else {
+		res.render('all_quests', {
+			title: 'All quests'
+			,quests: quests
+		});	
+	}
+});
+
+app.get('/quests/:id', function(req, res){
+	var quest_id = req.params.id
+	var quest = quests[quest_id]
+	if(quest) {
+		res.render('quest', {
+			title: "You are on quest "+quest_id
+			,quest: quest
+		});		
+	} else {
+		res.render('error', {
+			title: 'Ops, there is no such quest!'
+		})
+	}
+});
+
+
+// Binding and starting up...
+pubsub.attach(app);
 app.listen(WEBSERVER_PORT);
+// pubsub.listen(QuestUtils.getFayePort());
 console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);
+// console.log("Faye server listening on port %d in %s mode", QuestUtils.getFayePort(), app.settings.env);

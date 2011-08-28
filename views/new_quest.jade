@@ -1,0 +1,39 @@
+form(action='/quests/create', method='post', id="create_quest_form")
+  p 
+    label(for="tags") Tags (comma separated) 
+    br
+    input(id="tags", type="text", name="tags")
+  p
+    label(for="buckets") Buckets (comma separated)
+    br
+    input(id="buckets", type="text", name="buckets")
+  p
+    label(for="colour_scheme1")
+    img(src="colour_scheme1") 
+    input(id="colour_scheme1", type="radio", name="colour_scheme", value="1")
+    br
+    label(for="colour_scheme2") 
+    img(src="colour_scheme2") 
+    input(id="colour_scheme2", type="radio", name="colour_scheme", value="2")
+    br
+    label(for="colour_scheme3") 
+    img(src="colour_scheme3") 
+    input(id="colour_scheme3", type="radio", name="colour_scheme", value="3")
+    br
+    label(for="colour_scheme4") 
+    img(src="colour_scheme4") 
+    input(id="colour_scheme4", type="radio", name="colour_scheme", value="4")
+    br
+    label(for="colour_scheme5") 
+    img(src="colour_scheme5") 
+    input(id="colour_scheme5", type="radio", name="colour_scheme", value="5")
+    br
+    label(for="colour_scheme6") 
+    img(src="colour_scheme6") 
+    input(id="colour_scheme6", type="radio", name="colour_scheme", value="6")
+  p 
+    input(type="submit")
+  p 
+    input(type="button", onclick="create_quest();", value="Via Ajax")
+script(src='http://code.jquery.com/jquery-1.6.2.js')
+script(src='/javascripts/quest.js')

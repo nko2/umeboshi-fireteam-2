@@ -1,0 +1,23 @@
+h1= 'Quest created!'
+
+h2= 'Info'
+  p Quest URL: #{quest.questURL}
+  p JS: #{quest.pubsubJSFile}
+  p Quest Name: #{quest.questName}
+  p PubSub URL: #{quest.pubsubURL}
+  p Tags: #{quest.tags}
+  p Buckets: #{quest.buckets}
+  p Colour Scheme: #{quest.colour_scheme}
+  
+h2= 'Instructions'
+p= 'Add the following snippet at your page:'
+blockquote
+  p= '&lt;script src="'+quest.pubsubJSFile+'"&gt;&lt;/script&gt;'
+  p= '&lt;script type="text/javascript"&gt;'
+  p= '//&lt;![CDATA['
+  p= 'var client = new Faye.Client("'+quest.pubsubURL+'", {timeout:120});'
+  p= 'function pub() {client.publish("/'+quest.questName+'", {text: "Hello world"});}'
+  p= 'function sub() {client.subscribe("/'+quest.questName+'", function(message) {window.alert("Got a message: " + message.text);});}'
+  p= '//]]&gt;'
+  p= '&lt;/script&gt;'
+  

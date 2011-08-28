@@ -27,7 +27,7 @@ function count() {
 	this.photo_collection.count(function(error, result) {
 		if(error) console.log(error);
 		else {
-			console.log(result);
+			console.log("Total pictures: %d", result);
 		}
 	});
 }

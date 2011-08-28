@@ -13,6 +13,12 @@ ul#pictures
           - each tag in picture.tags
             = " "
             a(href='/pictures/#{tag}') #{tag}
+          p= " Classify as: "
+            form(action='/pictures/classify', method='post')
+              input(type='text', name='tag')
+              input(type='hidden', name='id', value=picture.id)
+              input(type='submit', value='Classify')
+            
           p
           - if(picture.classified_as) 
             = " Also classified as: "
