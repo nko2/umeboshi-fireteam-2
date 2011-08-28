@@ -10,6 +10,7 @@ var NKO_KEY = HOSTED_ON_JOYENT ? '/home/node/nko' : './setup/nko';
 var nko_setup = require(NKO_KEY).setup;
 var express = require('express')
 		, nko = require('nko')(nko_setup.secret)
+		, string = require('./lib/string').String
 		, PhotoCollection = require('./lib/photo_collection').PhotoCollection;
 
 var app = module.exports = express.createServer();
@@ -49,12 +50,13 @@ app.get('/', function(req, res){
 });
 
 app.get('/pictures', function(req, res){
+	var message = 'All pictures ({count})';
 	photo_collection.all(function(error, results) {
 		if(error) console.log(error);
 		else {
 			console.log("Results for tag '%s': %d", req.params.tag, results.length);
 			res.render('pictures', {
-				title: 'All pictures ('+ results.length +')'
+				title: message.interpolate({count:results.length})
 				, pictures : results
 			});
 		}
@@ -62,12 +64,13 @@ app.get('/pictures', function(req, res){
 });
 
 app.get('/pictures/:tag', function(req, res){
+	var message = 'Pictures tagged as {tag} ({count})';
 	photo_collection.withTag(req.params.tag, function(error, results) {
 		if(error) console.log(error);
 		else {
 			console.log("Results for tag '%s': %d", req.params.tag, results.length);
 			res.render('pictures', {
-				title: 'Pictures tagged as '+req.params.tag+ ' ('+ results.length +')'
+				title: message.interpolate({tag:req.params.tag, count:results.length})
 				, pictures : results
 			});
 		}
