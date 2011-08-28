@@ -1,7 +1,7 @@
 var PhotoCollection = require('../lib/photo_collection').PhotoCollection;
 
-function connect(host, port) {
-	this.photo_collection = new PhotoCollection(host, port);
+function connect(host, port, database, username, password) {
+	this.photo_collection = new PhotoCollection(host, port, database, username, password);
 }
 
 
@@ -10,12 +10,37 @@ function listMongoPictures() {
 		if(error) console.log(error);
 		else {
 			results.forEach(function(photo){
-				console.log(photo);
+				url = "http://farm%s.static.flickr.com/%s/%s_%s.jpg";
+				console.log(url, photo.farm, photo.server, photo.id, photo.secret);
 			});
 		}
 	});
 }
 
+function count() {
+	this.photo_collection.count(function(error, result) {
+		if(error) console.log(error);
+		else {
+			console.log(result);
+		}
+	});
+}
 
-connect("localhost", 27017);
-listMongoPictures();
+function countWithTag() {
+	this.photo_collection.withTag('girl', function(error, result) {
+		if(error) console.log(error);
+		else {
+			console.log(result.length);
+		}
+	});
+}
+
+function run() {
+	connect("staff.mongohq.com", 10034, "nodeko2011", "dqo", "nodeko2011");
+	// listMongoPictures();	
+	count();
+	// countWithTag();
+	setTimeout(run, 60000);
+}
+
+run();

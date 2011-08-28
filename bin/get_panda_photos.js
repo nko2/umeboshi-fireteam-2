@@ -1,12 +1,13 @@
 // output a list of Flickr Pandas
-
+var HOSTED_ON_JOYENT = /\/home\/node\/node\-service\/releases\/[^\/]*\/server.js/.test(__filename)
+var FLICKR_KEY = HOSTED_ON_JOYENT ? '/home/node/flickr_keys' : '../setup/flickr_keys';
 var defaults = {
   'host': 'api.flickr.com',
   'endpoint': '/services/rest/'
 };
 var http = require('http'),
     querystring = require('querystring'),
-    flickr_setup = require('../setup/flickr_keys').setup;
+    flickr_setup = require(FLICKR_KEY).setup;
 var PhotoCollection = require('../lib/photo_collection').PhotoCollection;
 
 var panda_name = 'ling ling',
@@ -49,8 +50,8 @@ var panda_name = 'ling ling',
     
 function callback(){}
 
-function connect(host, port) {
-	this.photo_collection = new PhotoCollection(host, port);
+function connect(host, port, database, username, password) {
+	this.photo_collection = new PhotoCollection(host, port, database, username, password);
 }
 
 function retrievePhotos(){
@@ -94,5 +95,6 @@ function callback(res){
       });
     }
 
-connect("localhost", 27017);
+// connect("localhost", 27017);
+connect("staff.mongohq.com", 10034, "nodeko2011", "dqo", "nodeko2011");
 retrievePhotos();

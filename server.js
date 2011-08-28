@@ -1,10 +1,13 @@
 // Setup
-var nko_setup = require('./setup/nko').setup;
+
+var  HOSTED_ON_JOYENT = /\/home\/node\/node\-service\/releases\/[^\/]*\/server.js/.test(__filename)
+		,WEBSERVER_PORT = HOSTED_ON_JOYENT ? 80 : 8080
 
 /**
  * Module dependencies.
  */
-
+var NKO_KEY = HOSTED_ON_JOYENT ? '/home/node/nko' : './setup/nko';
+var nko_setup = require(NKO_KEY).setup;
 var express = require('express')
 		, nko = require('nko')(nko_setup.secret);
 
@@ -38,5 +41,5 @@ app.get('/', function(req, res){
   });
 });
 
-app.listen(8000);
+app.listen(WEBSERVER_PORT);
 console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);
