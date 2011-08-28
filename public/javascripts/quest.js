@@ -5,7 +5,8 @@ function create_quest() {
 		, type: "POST"
 		, dataType: 'json'
 		, success: function(msg) {
-				alert("Sucesso: "+msg["questURL"]);
+				$('#notification').append("<div class='title'>Your quest is <b>ready</b> to begin:</div><div class='quest_url'>"+msg['questURL']+"</div>");
+				$('#notification').fadeIn("slow");//.toggle();
 			}
 		, error: function(msg) {
 				alert("Erro: "+msg['msg']);

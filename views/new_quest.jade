@@ -17,5 +17,6 @@ div.form_container
             input(id='colour_scheme#{i}', type="radio", name="colour_scheme", value='#{i}')
     p 
       input(type="button", onclick="create_quest();", value="create quest now")
+div(id='notification', style='display:none')
 script(src='http://code.jquery.com/jquery-1.6.2.js')
 script(src='/javascripts/quest.js')
